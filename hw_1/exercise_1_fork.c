@@ -5,14 +5,14 @@
 *             calling a parent process that prints goodbye and a child
 *             that prints hello
 *
-*  Note Compile and run with> gcc hello_fork.c -o hello_fork && ./hello_fork
+*  Note Compile and run with> gcc exercise_1_fork.c -o hello_fork && ./hello_fork
 ******************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
 int main() {
-    printf("hello (pid:%d)\n", (int) getpid());
+    printf("start (pid:%d)\n", (int) getpid());
     int x = 100;
     
     int rc = fork();
