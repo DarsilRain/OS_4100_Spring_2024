@@ -1,0 +1,68 @@
+/******************************************************************************
+*    Authors: Haley Burnell, Angus Brennan, Addison Goforth
+*    Date: 25 February 2024
+*    Purpose: Explore Processes parents and children by creating and 
+*             calling a parent process that prints goodbye and a child
+*             that prints hello
+*
+*  Note Compile and run with> gcc exercise_3_fork.c -o hello_fork && ./hello_fork
+******************************************************************************/
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <string.h>
+ #include <sys/wait.h>
+
+int main(int argc, char *argv[]) {
+    printf("hello (pid:%d)\n", (int) getpid());
+    int rc = fork();
+    if (rc < 0) { // fork failed; exit
+        fprintf(stderr, "fork failed\n");
+        exit(1);
+    } else if (rc == 0) { // child (new process)
+        printf("child (pid:%d)\n", (int) getpid());
+        char *myargs[2];
+        myargs[0] = strdup("/bin/ls"); // program: "ls"
+        myargs[1] = NULL; // mark end of array
+        execl(myargs[0], myargs); // runs ls command
+
+        char *myargs[2];
+        myargs[0] = strdup("ls"); // program: "ls"
+        myargs[1] = NULL; // mark end of array
+        execlp(myargs[0],myargs);
+
+        char *myargs[2];
+        myargs[0] = strdup("/bin/ls"); // program: "ls"
+        myargs[1] = NULL; // mark end of array
+        execle(myargs[0],myargs);
+
+        char *myargs[2];
+        myargs[0] = strdup("/bin/ls"); // program: "ls"
+        myargs[1] = NULL; // mark end of array
+        execv(myargs[0],myargs);
+
+        char *myargs[2];
+        myargs[0] = strdup("ls"); // program: "ls"
+        myargs[1] = NULL; // mark end of array
+        execvp(myargs[0],myargs);
+
+        char *myargs[2];
+        myargs[0] = strdup("ls"); // program: "ls"
+        myargs[1] = NULL; // mark end of array
+        execvp(myargs[0],myargs);
+
+        char *myargs[2];
+        myargs[0] = strdup("ls"); // program: "ls"
+        myargs[1] = NULL; // mark end of array
+        execvpe(myargs[0],myargs);
+
+        printf("this shouldn’t print out");
+
+    } else { // parent goes down this path
+        int rc_wait = wait(NULL);
+        printf("parent of %d (rc_wait:%d) (pid:%d)\n",
+        rc, rc_wait, (int) getpid());
+    }
+    return 0;
+}
+
