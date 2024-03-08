@@ -57,7 +57,7 @@ int main (int argc, char *argv[])
 void *producer(void *param)
 {
 	int i;
-	for (i=0; i<=20; i++) {
+	for (i=0; i<=2; i++) {
 		/* Insert into buffer */
 		pthread_mutex_lock (&m);
 		if(num > BUF_SIZE){exit(1);}	/* overflow */
@@ -65,9 +65,12 @@ void *producer(void *param)
 			pthread_cond_wait (&c_prod, &m);
 		/* if executing here, buffer not full so add element */
         char my_string[] = "hello\0";
-		buffer[add] = my_string[i];
-		add = (add+1) % BUF_SIZE;
-		num++;
+        //load the whole of my_string into the buffer
+        for(i=0;i<sizeof(my_string);i++){
+            buffer[add] = my_string[i];
+            add = (add+1) % BUF_SIZE;
+            num++;
+        }
 		pthread_mutex_unlock (&m);
 		pthread_cond_signal (&c_cons);
 		printf ("producer: inserted %s\n", my_string);  fflush (stdout);
@@ -79,18 +82,39 @@ void *producer(void *param)
 /* Consume value(s); Note the consumer never terminates */
 void *consumer(void *param)
 {
-	char i;
+	char in[BUF_SIZE];
 	while (1) {
 		pthread_mutex_lock (&m);
 		if (num < 0) exit(1);   /* underflow */
 		while (num == 0)		/* block if buffer empty */
 			pthread_cond_wait (&c_cons, &m);
 		/* if executing here, buffer not empty so remove element */
-		i = buffer[rem];
-		rem = (rem+1) % BUF_SIZE;
-		num--;
+        //read the whole string from the buffer
+        char next_char = 'a';
+        int i = 0;
+        while(next_char != 0){
+            next_char = buffer[rem];
+            in[i] = next_char;
+            rem = (rem+1) % BUF_SIZE;
+            num--;
+            i++;
+        }
 		pthread_mutex_unlock (&m);
 		pthread_cond_signal (&c_prod);
-		printf ("Consume value %c\n", i);  fflush(stdout);
+		printf ("Consume value %s\n", in);  
+        //fflush(stdout);
+
+        //now that the string was read, reverse it and print it
+        char reversed[BUF_SIZE];
+        int j = 0;
+        for(int k=BUF_SIZE; k>=0; k--){
+            if(in[k] == '\n' || in[k]=='\0'){
+                continue; //skip nonletter characters
+            }
+            reversed[j] = in[k];
+            j++;
+        }
+        printf("Reversed value %s\n",reversed);
+
 	}
 }
