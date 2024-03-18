@@ -9,3 +9,11 @@
 *
 *  Note Compile and run with> gcc burnell_fcfs.c -o sched && ./sched
 ******************************************************************************/
+#include <stdio.h>
+#include <stdlib.h>
+#include <malloc.h>
+
+int main() {
+
+    return 0;
+}
