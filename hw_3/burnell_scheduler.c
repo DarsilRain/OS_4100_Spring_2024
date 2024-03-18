@@ -7,7 +7,7 @@
 *           Input: burst time and priority of each process
 *           Output: print burst time, waiting time, and turnaround time
 *
-*  Note Compile and run with> gcc burnell_fcfs.c -o sched && ./sched
+*  Note Compile and run with> gcc burnell_scheduler.c -o sched && ./sched
 ******************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
