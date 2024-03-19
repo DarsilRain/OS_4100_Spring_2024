@@ -21,6 +21,7 @@ void printArray(int* arr, int size);
 
 int main()
 {
+    int curr_process = 0;
     //pt is the priority 
     //pname is for tracking process names and order
     int i, n, *bt, *wt, *tat, *pt, *pname;
@@ -76,9 +77,11 @@ int main()
 
     printf("\n PROCESS \t PRIORITY \t BURST TIME \t WAITING TIME \t TURNAROUND TIME \n");
     printf("------------------------------------------------------------------------\n");
+    curr_process = 0;
     for(i=0; i<n; i++)
     {
-        printf(" P%d \t\t %d \t\t %d \t\t %d \t\t %d \n", i, pt[i],bt[i], wt[i], tat[i]);
+        curr_process = pname[i];
+        printf(" P%d \t\t %d \t\t %d \t\t %d \t\t %d \n", curr_process, pt[i],bt[i], wt[i], tat[i]);
     }
 
     printf("\n Average Waiting Time = %f \n Average Turnaround Time = %f \n", avgwt, avgtat);
@@ -87,7 +90,7 @@ int main()
     printf("---------------\n");
     //print the processes in the order they are executed (print the pname array
     //  with correct wait times and turn around times for each process)
-    int curr_process = 0;
+    curr_process = 0;
     for(i=0; i<n; i++)
     {
         curr_process = pname[i];
