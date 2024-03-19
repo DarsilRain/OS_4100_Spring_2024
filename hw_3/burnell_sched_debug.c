@@ -25,8 +25,8 @@ int main()
     //pname is for tracking process names and order
     int i, n, *bt, *wt, *tat, *pt, *pname;
     float avgtat, avgwt;
-    printf("\n Enter the number of processes : ");
-    scanf("%d", &n);
+    //num processes is 3
+    n = 3;
 
     bt = (int*)malloc(n*sizeof(int));
     wt = (int*)malloc(n*sizeof(int));
@@ -34,19 +34,15 @@ int main()
     pname = (int*)malloc(n*sizeof(int));
     pt = (int*)malloc(n*sizeof(int));
 
-    printf("\n Enter the burst time for each process \n");
-    for(i=0; i<n; i++)
-    {
-        printf(" Burst time for P%d : ", i);
-        scanf("%d", &bt[i]);
-    }
+    //burst time for each process
+    bt[0]=2;
+    bt[1]=3;
+    bt[2]=4;
 
-    printf("\n Enter the priority for each process (0 is most important)\n");
-    for(i=0; i<n; i++)
-    {
-        printf(" Priority num for P%d : ", i);
-        scanf("%d", &pt[i]);
-    }
+    //priority for each process
+    pt[0]=4;
+    pt[1]=0;
+    pt[2]=3;
 
     // fill the process names array to sort later
     for(int i=0; i<n; i++) {
@@ -57,45 +53,64 @@ int main()
     selectionSort(bt,pt,pname,n);
 
     // calculate their metrics and "run" the processes
-    int curr_process = pname[0];
-    int prev_process =0; 
+    // note: wt and tat built in execution order
+    int curr_process = 0; // zero here is placeholder
+    int prev_process = 0; //zero here is placeholder
     wt[0] = 0;
-    tat[0] = bt[curr_process];
+    tat[0] = bt[0];
+    printf("bt P1: %d\n", bt[0]);
+
     for(i=1; i<n; i++)
     {
         curr_process = pname[i];
         prev_process = pname[i-1];
-        wt[i] = wt[prev_process] + bt[prev_process];  //waiting time[p] = waiting time[p-1] + Burst Time[p-1]
-        tat[i] = wt[curr_process] + bt[curr_process];     //Turnaround Time = Waiting Time + Burst Time
+        wt[i] = wt[i-1] + bt[i-1];  //waiting time[p] = waiting time[p-1] + Burst Time[p-1]
+        tat[i] = wt[i] + bt[i];     //Turnaround Time = Waiting Time + Burst Time
+        printf("curr_process: %d\n", curr_process);
+        printf("prev_process: %d\n", prev_process);
+        printf("wt[prev_process]: %d\n", wt[i-1]);
+        printf("bt[prev_process]: %d\n", bt[i-1]);
+        printf("wt[curr_process]: %d\n", wt[i]);
     }
 
-    for(i=0; i<n; i++)
-    {
-        avgwt += wt[i];
-        avgtat += tat[i]; 
-    }
-    avgwt = avgwt/n;
-    avgtat = avgtat/n;
+    printf("pname: ");
+    printArray(pname, n);
 
-    printf("\n PROCESS \t PRIORITY \t BURST TIME \t WAITING TIME \t TURNAROUND TIME \n");
-    printf("------------------------------------------------------------------------\n");
-    for(i=0; i<n; i++)
-    {
-        printf(" P%d \t\t %d \t\t %d \t\t %d \t\t %d \n", i, pt[i],bt[i], wt[i], tat[i]);
-    }
+    printf("burst time: ");
+    printArray(bt, n);
 
-    printf("\n Average Waiting Time = %f \n Average Turnaround Time = %f \n", avgwt, avgtat);
+    printf("wait time: ");
+    printArray(wt, n);
 
-    printf("\n GAANT CHART \n");
-    printf("---------------\n");
-    //print the processes in the order they are executed (print the pname array
-    //  with correct wait times and turn around times for each process)
-    curr_process = 0;
-    for(i=0; i<n; i++)
-    {
-        curr_process = pname[i];
-        printf(" %d\t|| P%d ||\t%d\n", wt[i], curr_process, tat[i]);
-    }
+
+
+    // for(i=0; i<n; i++)
+    // {
+    //     avgwt += wt[i];
+    //     avgtat += tat[i]; 
+    // }
+    // avgwt = avgwt/n;
+    // avgtat = avgtat/n;
+
+    // printf("\n PROCESS \t PRIORITY \t BURST TIME \t WAITING TIME \t TURNAROUND TIME \n");
+    // printf("------------------------------------------------------------------------\n");
+    // for(i=0; i<n; i++)
+    // {
+    //     printf(" P%d \t\t %d \t\t %d \t\t %d \t\t %d \n", i, pt[i],bt[i], wt[i], tat[i]);
+    // }
+
+    // printf("\n Average Waiting Time = %f \n Average Turnaround Time = %f \n", avgwt, avgtat);
+
+    // printf("\n GAANT CHART \n");
+    // printf("---------------\n");
+    // //print the processes in the order they are executed (print the pname array
+    // //  with correct wait times and turn around times for each process)
+    // curr_process = 0;
+    // for(i=0; i<n; i++)
+    // {
+    //     curr_process = pname[i];
+    //     printf(" %d\t|| P%d ||\t%d\n", wt[curr_process], curr_process, tat[curr_process]);
+    // }
     return 0;
 }
 
