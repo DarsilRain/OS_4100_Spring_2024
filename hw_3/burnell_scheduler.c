@@ -57,16 +57,13 @@ int main()
     selectionSort(bt,pt,pname,n);
 
     // calculate their metrics and "run" the processes
-    int curr_process = pname[0];
-    int prev_process =0; 
+    //note: I build the wt and tat in execution order
     wt[0] = 0;
-    tat[0] = bt[curr_process];
+    tat[0] = bt[0];
     for(i=1; i<n; i++)
     {
-        curr_process = pname[i];
-        prev_process = pname[i-1];
-        wt[i] = wt[prev_process] + bt[prev_process];  //waiting time[p] = waiting time[p-1] + Burst Time[p-1]
-        tat[i] = wt[curr_process] + bt[curr_process];     //Turnaround Time = Waiting Time + Burst Time
+        wt[i] = wt[i-1] + bt[i-1];  //waiting time[p] = waiting time[p-1] + Burst Time[p-1]
+        tat[i] = wt[i] + bt[i];     //Turnaround Time = Waiting Time + Burst Time
     }
 
     for(i=0; i<n; i++)
@@ -90,7 +87,7 @@ int main()
     printf("---------------\n");
     //print the processes in the order they are executed (print the pname array
     //  with correct wait times and turn around times for each process)
-    curr_process = 0;
+    int curr_process = 0;
     for(i=0; i<n; i++)
     {
         curr_process = pname[i];
