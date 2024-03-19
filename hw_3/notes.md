@@ -6,6 +6,9 @@
 ###Process States
 ![](./clip/process_states.png)
 
+## Non-Preemptive Priority Scheduling
+* [Here it says](https://www.javatpoint.com/os-non-preemptive-priority-scheduling), In the Non Preemptive Priority scheduling, The Processes are scheduled according to the priority number assigned to them. Once the process gets scheduled, it will run till the completion. 
+
 ## Scheduling Criteria
 * **CPU utilization** — we want to keep the CPU as busy as possible (in reality usually ranges from 40% for a light load and up to 90% for a heavily used system)
 * **Throughput** — a measure of processes completed per unit time (good CPU utilization means work is being done)
