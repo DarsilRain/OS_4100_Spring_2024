@@ -40,7 +40,7 @@ void *sum_function( void *arg )
     for(int i=start; i<=end; i++) {
         *sum += i;
     }
-    printf("Passed Arg Start: %d, Passed Arg Stop: %d, Sum: %d\n", start, end, sum);
+    printf("Passed Arg Start: %d, Passed Arg Stop: %d, Sum: %d\n", start, end, *sum);
     pthread_exit(sum);
 }
 
@@ -73,8 +73,8 @@ int main()
     pthread_join( thread2, (void **) &sum2); 
 
     //print the sums of each part
-    printf("Thread 1 returns: %d\n",sum1);
-    printf("Thread 2 returns: %d\n",sum2);
+    printf("Thread 1 returns: %d\n",*sum1);
+    printf("Thread 2 returns: %d\n",*sum2);
 
     free(sum1);
     free(sum2);
