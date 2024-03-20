@@ -40,19 +40,29 @@ void *sum_function( void *arg )
     for(int i=start; i<=end; i++) {
         *sum += i;
     }
-    printf("Passed Arg Start: %d, Passed Arg Stop: %d, Sum: %d\n", start, end, *sum);
+    // debug statement
+    //printf("Passed Arg Start: %d, Passed Arg Stop: %d, Sum: %d\n", start, end, *sum);
     pthread_exit(sum);
 }
 
 int main()
 {
-    pthread_t thread1, thread2; //Initialize
-    data thread_data[2];
+    pthread_t thread1, thread2, thread3, thread4, thread5; //Initialize
+    data thread_data[5];
     thread_data[0].b = 0;
     thread_data[0].e = 20;
 
     thread_data[1].b = 21;
     thread_data[1].e = 40;
+
+    thread_data[2].b = 41;
+    thread_data[2].e = 60;
+
+    thread_data[3].b = 61;
+    thread_data[3].e = 80;
+
+    thread_data[4].b = 81;
+    thread_data[4].e = 100;
 
     /* Create independent threads each of which will execute function *
     
@@ -60,6 +70,9 @@ int main()
              
     pthread_create( &thread1, NULL, sum_function, &thread_data[0]);
     pthread_create( &thread2, NULL, sum_function, &thread_data[1]);
+    pthread_create( &thread3, NULL, sum_function, &thread_data[2]);
+    pthread_create( &thread4, NULL, sum_function, &thread_data[3]);
+    pthread_create( &thread5, NULL, sum_function, &thread_data[4]);
 
     /* Wait till threads are complete before main continues. Unless we  */
     /* wait we run the risk of executing an exit which will terminate   */
@@ -68,15 +81,30 @@ int main()
     //create space for sum
     int* sum1;
     int* sum2;
+    int* sum3;
+    int* sum4;
+    int* sum5;
 
     pthread_join( thread1, (void **) &sum1);
     pthread_join( thread2, (void **) &sum2); 
+    pthread_join( thread3, (void **) &sum3); 
+    pthread_join( thread4, (void **) &sum4); 
+    pthread_join( thread5, (void **) &sum5); 
 
     //print the sums of each part
     printf("Thread 1 returns: %d\n",*sum1);
     printf("Thread 2 returns: %d\n",*sum2);
+    printf("Thread 3 returns: %d\n",*sum3);
+    printf("Thread 4 returns: %d\n",*sum4);
+    printf("Thread 5 returns: %d\n",*sum5);
+
+    printf("Grand Total: %d\n", (*sum1+*sum2+*sum3+*sum4+*sum5));
 
     free(sum1);
     free(sum2);
+    free(sum3);
+    free(sum4);
+    free(sum5);
+
     return 0;
 }
